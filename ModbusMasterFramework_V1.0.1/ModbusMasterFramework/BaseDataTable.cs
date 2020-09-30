@@ -19,7 +19,7 @@ namespace ModbusMasterFramework
     {
         #region Global Variables
         private delegate void SafeCallDelegate();
-        BackgroundWorker backgroundWorker1 = new BackgroundWorker();
+       readonly BackgroundWorker backgroundWorker1 = new BackgroundWorker();
         WriteRequestForm writeRequestForm;
         public byte[] RegisterData = new byte[5];
         public int[] CoilStatus = new int[4];
@@ -148,7 +148,7 @@ namespace ModbusMasterFramework
                 writeRequestForm.ShowDialog();
 
             }
-            catch (Exception ae)
+            catch (Exception)
             {
                 MessageBox.Show("Write Request is possible only for Function Code 01 and 03.Change function code", "Wrong Function Code", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
@@ -269,14 +269,13 @@ namespace ModbusMasterFramework
         public void TxtInt16DataLeave(object sender, EventArgs e)
         {
             var textBox = (TextBox)sender;
-            int diff = 0;
             int textBoxAddress = int.Parse(textBox.Name);
-            byte[] b = new byte[2];
+            
             UInt16 res;
-            diff = textBoxAddress - baseStartAddress;
+            int diff = textBoxAddress - baseStartAddress;
             if (UInt16.TryParse(textBox.Text, out res))
             {
-                b = BitConverter.GetBytes(res);
+                byte[] b = BitConverter.GetBytes(res);
                 Array.Reverse(b);
                 Array.Copy(b, 0, RegisterData, (diff) * 2, 2);
 
@@ -291,14 +290,14 @@ namespace ModbusMasterFramework
         public void TxtUInt16DataLeave(object sender, EventArgs e)
         {
             var textBox = (TextBox)sender;
-            int diff = 0;
+           
             int textBoxAddress = int.Parse(textBox.Name);
-            byte[] b = new byte[2];
             UInt16 res;
-            diff = textBoxAddress - baseStartAddress;
+            int diff = textBoxAddress - baseStartAddress;
             if (UInt16.TryParse(textBox.Text, out res))
             {
-                b = BitConverter.GetBytes(res);
+               
+                byte[] b = BitConverter.GetBytes(res);
                 Array.Reverse(b);
                 Array.Copy(b, 0, RegisterData, (diff) * 2, 2);
 
@@ -313,14 +312,14 @@ namespace ModbusMasterFramework
         public void TxtInt32DataLeave(object sender, EventArgs e)
         {
             var textBox = (TextBox)sender;
-            int diff = 0;
+            
             int textBoxAddress = int.Parse(textBox.Name);
-            byte[] b = new byte[2];
+           
             UInt16 res;
-            diff = textBoxAddress - baseStartAddress;
+            int diff = textBoxAddress - baseStartAddress;
             if (UInt16.TryParse(textBox.Text, out res))
             {
-                b = BitConverter.GetBytes(res);
+                byte[] b = BitConverter.GetBytes(res);
                 Array.Reverse(b);
                 Array.Copy(b, 0, RegisterData, (diff) * 2, 2);
 
@@ -334,14 +333,13 @@ namespace ModbusMasterFramework
         public void TxtUInt32DataLeave(object sender, EventArgs e)
         {
             var textBox = (TextBox)sender;
-            int diff = 0;
             int textBoxAddress = int.Parse(textBox.Name);
-            byte[] b = new byte[2];
+            
             UInt16 res;
-            diff = textBoxAddress - baseStartAddress;
+            int diff = textBoxAddress - baseStartAddress;
             if (UInt16.TryParse(textBox.Text, out res))
             {
-                b = BitConverter.GetBytes(res);
+                byte[] b = BitConverter.GetBytes(res);
                 Array.Reverse(b);
                 Array.Copy(b, 0, RegisterData, (diff) * 2, 2);
 
@@ -356,12 +354,12 @@ namespace ModbusMasterFramework
         {
             var textBox = (TextBox)sender;
             int currentRegAddress = int.Parse(textBox.Name);
-            byte[] b = new byte[4];
+            
             byte[] c = new byte[4];
             
             try
             {
-                b = BitConverter.GetBytes(float.Parse(textBox.Text));
+                byte[] b = BitConverter.GetBytes(float.Parse(textBox.Text));
 
                 switch (baseFormatType.Split(' ')[0])
                 {
@@ -408,11 +406,11 @@ namespace ModbusMasterFramework
             var textBox = (TextBox)sender;
             ushort res;
             int textBoxAddress = int.Parse(textBox.Name);
-            byte[] b = new byte[2];
+            
             if (UInt16.TryParse(textBox.Text, NumberStyles.HexNumber, CultureInfo.CurrentCulture, out res))
             {
                 Int16 intAgain = Int16.Parse(textBox.Text.Replace("0x", ""), System.Globalization.NumberStyles.HexNumber);
-                b = BitConverter.GetBytes(intAgain);
+                byte[] b = BitConverter.GetBytes(intAgain);
                 Array.Reverse(b);
                 Array.Copy(b, 0, RegisterData, (textBoxAddress - baseStartAddress) * 2, 2);
             }
@@ -427,10 +425,10 @@ namespace ModbusMasterFramework
         {
             var textBox = (TextBox)sender;
             int textBoxAddress = int.Parse(textBox.Name);
-            byte[] b = new byte[2];
+            _ = new byte[2];
             try
             {
-                b = BitConverter.GetBytes(Convert.ToUInt16(textBox.Text, 2));
+                byte[] b = BitConverter.GetBytes(Convert.ToUInt16(textBox.Text, 2));
                 Array.Reverse(b);
                 Array.Copy(b, 0, RegisterData, (textBoxAddress - baseStartAddress) * 2, 2);
 
@@ -805,7 +803,7 @@ namespace ModbusMasterFramework
                 }
             }
 
-            catch (Exception e)
+            catch (Exception)
             {
                 f.AppendLog("Error converting to " + baseDatatype + ".Change Format/datatype.");
                 throw new Exception();
